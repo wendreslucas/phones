@@ -120,6 +120,148 @@ code {
     body {
         @apply bg-background text-foreground;
     }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+}
+
+@layer components {
+    .sidebar-gradient {
+        background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+    }
+    
+    .card-hover {
+        @apply transition-all duration-300 ease-out;
+    }
+    
+    .card-hover:hover {
+        @apply shadow-lg -translate-y-1;
+    }
+    
+    .badge-new {
+        @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+        background-color: hsl(var(--accent));
+        color: hsl(var(--accent-foreground));
+    }
+    
+    .menu-item {
+        @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer;
+    }
+    
+    .menu-item:hover {
+        @apply bg-white/10;
+    }
+    
+    .menu-item.active {
+        @apply bg-white/20;
+    }
+    
+    .stat-card {
+        @apply bg-card rounded-xl p-6 shadow-sm border border-border card-hover;
+    }
+    
+    .form-section {
+        @apply bg-card rounded-xl p-6 shadow-sm border border-border;
+    }
+    
+    .stepper-item {
+        @apply flex items-center gap-3 py-3 px-4 rounded-lg cursor-pointer transition-all duration-200;
+    }
+    
+    .stepper-item.active {
+        @apply bg-primary/10 text-primary;
+    }
+    
+    .stepper-item.completed {
+        @apply text-success;
+    }
+    
+    .input-field {
+        @apply w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground;
+        @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+        @apply transition-all duration-200;
+    }
+    
+    .input-field:hover {
+        @apply border-primary/50;
+    }
+    
+    .input-error {
+        @apply border-destructive focus:ring-destructive;
+    }
+    
+    .btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium;
+        @apply bg-primary text-primary-foreground;
+        @apply hover:opacity-90 transition-all duration-200;
+        @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    }
+    
+    .btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium;
+        @apply bg-secondary text-secondary-foreground;
+        @apply hover:bg-secondary/80 transition-all duration-200;
+    }
+    
+    .btn-accent {
+        @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium;
+        background-color: hsl(var(--accent));
+        color: hsl(var(--accent-foreground));
+        @apply hover:opacity-90 transition-all duration-200;
+    }
+    
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: hsl(var(--muted-foreground)) transparent;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: hsl(var(--muted-foreground));
+        border-radius: 3px;
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    
+    .animate-slide-in {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .animate-scale-in {
+        animation: scaleIn 0.2s ease-out;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-10px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 @layer base {
