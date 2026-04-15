@@ -1,0 +1,118 @@
+<analysis>**original_problem_statement:** 
+Preciso de uma versão dessa aplicação usando ViteJs, Typescript, react-query, yup, formik. 
+PRODUCT REQUIREMENTS: 
+1. Convert the existing application to use ViteJs and TypeScript.
+2. Use Axios for Node.js backend integration (PostgreSQL will be integrated later).
+3. Use React Query for state/data management.
+4. Use Formik and Yup for forms and validation.
+5. Modernize and improve the visual design (Admin Dashboard style).
+
+**User's preferred language**: Portuguese (PT-BR). 
+**INSTRUCTION TO NEXT AGENT:** You MUST respond and provide all chat interactions to the user exclusively in Portuguese.
+
+**what currently exists?** 
+A baseline React application with Shadcn UI components installed. The previous agent successfully installed the requested dependencies (TypeScript, React Query, Formik, Yup, Axios) and updated the design system ( and ) to support a modern admin dashboard theme. The directory structure for the new architecture (, , , , ) has been created, but the actual TypeScript and Vite conversion (creating  files and Vite configs) is pending.
+
+**Last working item**: 
+    - Last item agent was working: Creating the base TypeScript folder structure and preparing to migrate core files (, , ).
+    - Status: IN PROGRESS
+    - Agent Testing Done: N
+    - Which testing method agent to use: frontend testing agent (after completing the Vite/TS migration and resolving initial build errors).
+    - User Testing Done: N
+
+**All Pending/In progress Issue list**: 
+  Issue 1: Project Build Configuration (Vite/TS Migration incomplete)
+     - Attempted fixes: Installed dependencies and created folders, but hasn't created core Vite files.
+     - Next debug checklist: Create , , move/update , and rename  to  and  to . 
+     - Why fix this issue and what will be achieved with the fix? Application won't run until Vite and TypeScript core files are properly configured to replace standard React scripts.
+     - Status: IN PROGRESS
+     - Is recurring issue? N
+     - Should Test frontend/backend/both after fix? frontend
+     - Blocked on other issue: None
+
+**In progress Task List**: 
+  Task 1: Complete Vite + TypeScript Migration
+     - Where to resume: Create , , and replace JS entry points with TSX (, ). Update  to load .
+     - What will be achieved with this? A functional Vite + TypeScript environment ready for modern React development.
+     - Status: IN PROGRESS
+     - Should Test frontend/backend/both after fix? frontend
+     - Blocked on something: None
+
+**Upcoming and Future Tasks**:
+  - P0: Setup  (React Query) in .
+  - P0: Create an Axios instance setup in  with base URL configuration.
+  - P0: Develop a modern Admin Dashboard Layout () utilizing Shadcn UI (sidebar, header, content area).
+  - P1: Refactor existing components to TypeScript () and apply the modernized design system.
+  - P1: Build basic CRUD prototype views (mocking data via Axios for now) using Formik + Yup for forms.
+  
+**Completed work in this session**:
+- Gathered refined requirements from the user.
+- Installed required packages via yarn (TypeScript, React Query, Formik, Yup, Axios).
+- Enhanced Tailwind Configuration ().
+- Updated global CSS variables for modernized theme ().
+- Created folder structure for scalable architecture (, , , , ).
+
+**Earlier issues found/mentioned but not fixed**:
+  None.
+
+**Known issue recurrence from previous fork**:
+  - Issue recurrence in previous fork: None
+  - Recurrence count: 0
+  - Status: NOT STARTED
+
+**Code Architecture**:
+
+
+**Key Technical Concepts**:
+Frontend: React, ViteJs, TypeScript, Tailwind CSS, Shadcn UI
+State & Fetching: React Query (@tanstack/react-query), Axios
+Forms: Formik, Yup
+
+**key DB schema**:
+  - TBD (Will integrate with NodeJs/PostgreSQL in a future phase).
+
+**changes in tech stack**:
+  - Transitioning frontend from standard JS (CRA) to Vite + TypeScript.
+  - Added Formik, Yup, React Query, and Axios.
+
+**All files of reference**:
+  -  (Contains the updated HSL design tokens for modern admin UI).
+  -  (Updated with new theme settings and animations).
+
+**Areas that need refactoring**:
+  -  and  must be refactored to TypeScript () and standard Vite structure.
+  - Existing Shadcn components in  might be in  and may require  conversion or proper  rules () to work seamlessly.
+
+**key api endpoints**:
+  - None configured yet. Use mocked endpoints via Axios for the prototype phase until the Node.js backend is available.
+
+**Critical Info for New Agent**:
+  - You are right in the middle of a **Vite + TypeScript migration**. The previous agent installed the dependencies and created folders but stopped before doing the actual configuration.
+  - Your immediate next step MUST be creating , , updating  (script tag to ), and creating  + .
+  - Ensure the UI looks like a highly polished, modern Admin Dashboard. Do not use generic layouts. Use the customized design tokens already placed in .
+  - Respond to the user strictly in Portuguese.
+
+**documents and test reports created in this job**:
+  - None yet.
+
+**Last 10 User Messages and any pending HUMAN messages**:
+ 1. 1 - Sim 2 - Por enquanto apenas 3 - Vamos usar Axios para integrar com backend em NodeJs 4 - Vamos depois integrar com NodeJs PostgreSQL 5 - Siga a ideia mas pode modernizar e melhorar o visual (Status: ADDRESSED - Guidelines collected for tech stack and modern UI)
+ 2. Preciso de uma versão dessa aplicação usando ViteJs, Typescript, react-query, yup, formik, (Status: IN PROGRESS - Dependencies added, migration pending)
+
+**Project Health Check**:
+  - Broken (Currently in a transitional state between React/JS and Vite/TS. Needs Vite config files and TSX entry points to compile).
+
+**3rd Party Integrations**:
+  - None
+
+**Testing status**:
+  - Testing agent used after significant changes: NO
+  - Troubleshoot agent used after agent stuck in loop: NO
+  - Test files created: []
+  - Known regressions: Application likely won't start until Vite/TS configs are fully implemented.
+
+**Credentials to test flow**:
+  - N/A
+
+**What agent forgot to execute**:
+  - The previous agent installed TypeScript and Vite dependencies but forgot to actually scaffold , , and convert / before concluding the turn. This must be your first action.</analysis>
