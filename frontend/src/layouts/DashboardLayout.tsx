@@ -1,95 +1,142 @@
-import { useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useState } from "react";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard, Store, ClipboardList, Package,
-  ChevronDown, ChevronRight, Menu, X, Bell,
-  Search, User, Settings, LogOut,
-  Percent, Tag, Target, Smartphone,
-  CreditCard, Shield, Layers, Truck,
-  ArrowLeftRight, FileText, BarChart3, DollarSign
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+  LayoutDashboard,
+  Store,
+  ClipboardList,
+  Package,
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  X,
+  Bell,
+  Search,
+  User,
+  Settings,
+  LogOut,
+  Percent,
+  Tag,
+  Target,
+  Smartphone,
+  CreditCard,
+  Shield,
+  Layers,
+  Truck,
+  ArrowLeftRight,
+  FileText,
+  BarChart3,
+  DollarSign,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NavGroup {
-  label: string
-  icon: React.ElementType
-  basePath: string
-  items: { label: string; path: string; icon: React.ElementType }[]
+  label: string;
+  icon: React.ElementType;
+  basePath: string;
+  items: { label: string; path: string; icon: React.ElementType }[];
 }
 
 const navGroups: NavGroup[] = [
   {
-    label: 'Loja',
+    label: "Loja",
     icon: Store,
-    basePath: '/loja',
+    basePath: "/loja",
     items: [
-      { label: 'Comissoes', path: '/loja/comissoes', icon: Percent },
-      { label: 'Descontos', path: '/loja/descontos', icon: Tag },
-      { label: 'Metas de Venda', path: '/loja/metas-venda', icon: Target },
+      { label: "Comissões", path: "/loja/comissoes", icon: Percent },
+      { label: "Descontos", path: "/loja/descontos", icon: Tag },
+      { label: "Metas de Venda", path: "/loja/metas-venda", icon: Target },
     ],
   },
   {
-    label: 'Cadastro',
+    label: "Cadastro",
     icon: ClipboardList,
-    basePath: '/cadastro',
+    basePath: "/cadastro",
     items: [
-      { label: 'Gestao IMEI', path: '/cadastro/imei', icon: Smartphone },
-      { label: 'Cartao', path: '/cadastro/cartao', icon: CreditCard },
-      { label: 'Grupo Permissao', path: '/cadastro/grupo-permissao', icon: Shield },
-      { label: 'Grupo de Contas', path: '/cadastro/grupo-contas', icon: Layers },
-      { label: 'Fornecedor', path: '/cadastro/fornecedor', icon: Truck },
+      { label: "Gestao IMEI", path: "/cadastro/imei", icon: Smartphone },
+      { label: "Cartão", path: "/cadastro/cartao", icon: CreditCard },
+      {
+        label: "Grupo Permissão",
+        path: "/cadastro/grupo-permissao",
+        icon: Shield,
+      },
+      {
+        label: "Grupo de Contas",
+        path: "/cadastro/grupo-contas",
+        icon: Layers,
+      },
+      { label: "Fornecedor", path: "/cadastro/fornecedor", icon: Truck },
     ],
   },
   {
-    label: 'Estoque',
+    label: "Estoque",
     icon: Package,
-    basePath: '/estoque',
+    basePath: "/estoque",
     items: [
-      { label: 'Movimentacao', path: '/estoque/movimentacao', icon: ArrowLeftRight },
-      { label: 'NFe Fornecedor', path: '/estoque/nfe-fornecedor', icon: FileText },
-      { label: 'Posicao Sintetica', path: '/estoque/posicao-sintetica', icon: BarChart3 },
-      { label: 'Estoque Valorizado', path: '/estoque/estoque-valorizado', icon: DollarSign },
+      {
+        label: "Movimentacao",
+        path: "/estoque/movimentacao",
+        icon: ArrowLeftRight,
+      },
+      {
+        label: "NFe Fornecedor",
+        path: "/estoque/nfe-fornecedor",
+        icon: FileText,
+      },
+      {
+        label: "Posicao Sintetica",
+        path: "/estoque/posicao-sintetica",
+        icon: BarChart3,
+      },
+      {
+        label: "Estoque Valorizado",
+        path: "/estoque/estoque-valorizado",
+        icon: DollarSign,
+      },
     ],
   },
-]
+];
 
 export default function DashboardLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(['Loja', 'Cadastro', 'Estoque'])
-  const location = useLocation()
-  const { user, logout } = useAuth()
-  const navigate = useNavigate()
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([
+    "Loja",
+    "Cadastro",
+    "Estoque",
+  ]);
+  const location = useLocation();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleGroup = (label: string) => {
     setExpandedGroups((prev) =>
-      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label]
-    )
-  }
+      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label],
+    );
+  };
 
   const currentPageTitle = () => {
-    if (location.pathname === '/') return 'Dashboard'
+    if (location.pathname === "/") return "Dashboard";
     for (const group of navGroups) {
       for (const item of group.items) {
-        if (location.pathname === item.path) return item.label
+        if (location.pathname === item.path) return item.label;
       }
     }
-    return 'Dashboard'
-  }
+    return "Dashboard";
+  };
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
@@ -100,8 +147,12 @@ export default function DashboardLayout() {
         </div>
         {sidebarOpen && (
           <div className="animate-fade-in">
-            <h1 className="text-base font-bold text-white font-display tracking-tight">StoreAdmin</h1>
-            <p className="text-[10px] text-white/60 uppercase tracking-widest">Gestao de Loja</p>
+            <h1 className="text-base font-bold text-white font-display tracking-tight">
+              StoreAdmin
+            </h1>
+            <p className="text-[10px] text-white/60 uppercase tracking-widest">
+              Gestao de Loja
+            </p>
           </div>
         )}
       </div>
@@ -114,7 +165,7 @@ export default function DashboardLayout() {
             to="/"
             end
             className={({ isActive }) =>
-              `menu-item text-sm ${isActive ? 'active bg-white/15 text-white font-medium' : 'text-white/70 hover:text-white'}`
+              `menu-item text-sm ${isActive ? "active bg-white/15 text-white font-medium" : "text-white/70 hover:text-white"}`
             }
             data-testid="nav-dashboard"
           >
@@ -122,19 +173,23 @@ export default function DashboardLayout() {
             {sidebarOpen && <span>Dashboard</span>}
           </NavLink>
 
-          {sidebarOpen && <div className="pt-2"><Separator className="bg-white/10" /></div>}
+          {sidebarOpen && (
+            <div className="pt-2">
+              <Separator className="bg-white/10" />
+            </div>
+          )}
 
           {/* Grouped Navigation */}
           {navGroups.map((group) => {
-            const isExpanded = expandedGroups.includes(group.label)
-            const isGroupActive = location.pathname.startsWith(group.basePath)
-            const GroupIcon = group.icon
+            const isExpanded = expandedGroups.includes(group.label);
+            const isGroupActive = location.pathname.startsWith(group.basePath);
+            const GroupIcon = group.icon;
 
             return (
               <div key={group.label} className="pt-1">
                 <button
                   onClick={() => toggleGroup(group.label)}
-                  className={`menu-item text-sm w-full ${isGroupActive ? 'text-white font-medium' : 'text-white/70 hover:text-white'}`}
+                  className={`menu-item text-sm w-full ${isGroupActive ? "text-white font-medium" : "text-white/70 hover:text-white"}`}
                   data-testid={`nav-group-${group.label.toLowerCase()}`}
                 >
                   <GroupIcon className="w-[18px] h-[18px] shrink-0" />
@@ -153,7 +208,7 @@ export default function DashboardLayout() {
                 {sidebarOpen && isExpanded && (
                   <div className="ml-4 pl-3 border-l border-white/10 space-y-0.5 mt-0.5 animate-fade-in">
                     {group.items.map((item) => {
-                      const ItemIcon = item.icon
+                      const ItemIcon = item.icon;
                       return (
                         <NavLink
                           key={item.path}
@@ -162,21 +217,21 @@ export default function DashboardLayout() {
                           className={({ isActive }) =>
                             `flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] transition-all duration-150 ${
                               isActive
-                                ? 'bg-white/15 text-white font-medium'
-                                : 'text-white/55 hover:text-white hover:bg-white/5'
+                                ? "bg-white/15 text-white font-medium"
+                                : "text-white/55 hover:text-white hover:bg-white/5"
                             }`
                           }
-                          data-testid={`nav-${item.path.split('/').pop()}`}
+                          data-testid={`nav-${item.path.split("/").pop()}`}
                         >
                           <ItemIcon className="w-3.5 h-3.5 shrink-0" />
                           <span>{item.label}</span>
                         </NavLink>
-                      )
+                      );
                     })}
                   </div>
                 )}
               </div>
-            )
+            );
           })}
         </div>
       </ScrollArea>
@@ -186,26 +241,33 @@ export default function DashboardLayout() {
         <div className="menu-item text-sm text-white/70">
           <Avatar className="w-7 h-7">
             <AvatarFallback className="bg-white/20 text-white text-xs font-medium">
-              {user?.name?.substring(0, 2).toUpperCase() || 'AD'}
+              {user?.name?.substring(0, 2).toUpperCase() || "AD"}
             </AvatarFallback>
           </Avatar>
           {sidebarOpen && (
             <div className="flex-1 min-w-0 animate-fade-in">
-              <p className="text-white text-xs font-medium truncate">{user?.name || 'Admin'}</p>
-              <p className="text-white/50 text-[10px] truncate">{user?.email || 'admin@storeadmin.com'}</p>
+              <p className="text-white text-xs font-medium truncate">
+                {user?.name || "Admin"}
+              </p>
+              <p className="text-white/50 text-[10px] truncate">
+                {user?.email || "admin@storeadmin.com"}
+              </p>
             </div>
           )}
         </div>
       </div>
     </div>
-  )
+  );
 
   return (
-    <div className="min-h-screen bg-background flex" data-testid="dashboard-layout">
+    <div
+      className="min-h-screen bg-background flex"
+      data-testid="dashboard-layout"
+    >
       {/* Desktop Sidebar */}
       <aside
         className={`hidden lg:flex flex-col sidebar-gradient transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-[68px]'
+          sidebarOpen ? "w-64" : "w-[68px]"
         }`}
         data-testid="sidebar"
       >
@@ -215,7 +277,10 @@ export default function DashboardLayout() {
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileSidebarOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileSidebarOpen(false)}
+          />
           <aside className="absolute left-0 top-0 bottom-0 w-64 sidebar-gradient animate-slide-in-left z-10">
             <SidebarContent />
           </aside>
@@ -225,7 +290,10 @@ export default function DashboardLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4 lg:px-6 shrink-0" data-testid="header">
+        <header
+          className="h-14 border-b border-border bg-card flex items-center justify-between px-4 lg:px-6 shrink-0"
+          data-testid="header"
+        >
           <div className="flex items-center gap-3">
             {/* Mobile menu */}
             <Button
@@ -245,9 +313,15 @@ export default function DashboardLayout() {
               onClick={() => setSidebarOpen(!sidebarOpen)}
               data-testid="sidebar-toggle-btn"
             >
-              {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {sidebarOpen ? (
+                <X className="w-4 h-4" />
+              ) : (
+                <Menu className="w-4 h-4" />
+              )}
             </Button>
-            <h2 className="text-sm font-semibold text-foreground font-display">{currentPageTitle()}</h2>
+            <h2 className="text-sm font-semibold text-foreground font-display">
+              {currentPageTitle()}
+            </h2>
           </div>
 
           <div className="flex items-center gap-2">
@@ -262,7 +336,12 @@ export default function DashboardLayout() {
             </div>
 
             {/* Notifications */}
-            <Button variant="ghost" size="icon" className="h-8 w-8 relative" data-testid="notifications-btn">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 relative"
+              data-testid="notifications-btn"
+            >
               <Bell className="w-4 h-4 text-muted-foreground" />
               <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-destructive rounded-full" />
             </Button>
@@ -270,19 +349,36 @@ export default function DashboardLayout() {
             {/* User menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="user-menu-btn">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  data-testid="user-menu-btn"
+                >
                   <Avatar className="w-7 h-7">
                     <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                      {user?.name?.substring(0, 2).toUpperCase() || 'AD'}
+                      {user?.name?.substring(0, 2).toUpperCase() || "AD"}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem><User className="w-3.5 h-3.5 mr-2" /> Perfil</DropdownMenuItem>
-                <DropdownMenuItem><Settings className="w-3.5 h-3.5 mr-2" /> Configuracoes</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <User className="w-3.5 h-3.5 mr-2" /> Perfil
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="w-3.5 h-3.5 mr-2" /> Configuracoes
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive" onClick={() => { logout(); navigate('/login') }}><LogOut className="w-3.5 h-3.5 mr-2" /> Sair</DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={() => {
+                    logout();
+                    navigate("/login");
+                  }}
+                >
+                  <LogOut className="w-3.5 h-3.5 mr-2" /> Sair
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -294,5 +390,5 @@ export default function DashboardLayout() {
         </main>
       </div>
     </div>
-  )
+  );
 }
