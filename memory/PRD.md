@@ -18,8 +18,10 @@ Construir uma aplicacao admin dashboard moderna usando ViteJs, TypeScript, React
 ├── vite.config.ts          # Config Vite (alias @, porta 3000)
 ├── tsconfig.json           # Config TypeScript
 ├── src/
-│   ├── main.tsx            # Entry com QueryClientProvider
-│   ├── App.tsx             # Rotas (13 paginas)
+│   ├── main.tsx            # Entry com QueryClientProvider + AuthProvider
+│   ├── App.tsx             # Rotas (13 paginas + 3 auth)
+│   ├── contexts/
+│   │   └── AuthContext.tsx  # Auth state (localStorage)
 │   ├── api/
 │   │   ├── axios.ts        # Instancia Axios configurada
 │   │   └── mockData.ts     # Dados mockados
@@ -28,9 +30,11 @@ Construir uma aplicacao admin dashboard moderna usando ViteJs, TypeScript, React
 │   │   ├── cadastro.ts     # IMEI, Cartao, GrupoPermissao, GrupoContas, Fornecedor
 │   │   └── estoque.ts      # MovimentacaoEstoque, NfeFornecedor, PosicaoSintetica, EstoqueValorizado
 │   ├── layouts/
-│   │   └── DashboardLayout.tsx  # Sidebar + Header
+│   │   ├── DashboardLayout.tsx  # Sidebar + Header
+│   │   └── AuthLayout.tsx       # Split layout login/cadastro
 │   ├── pages/
 │   │   ├── Dashboard.tsx
+│   │   ├── auth/           # Login, Register, ForgotPassword
 │   │   ├── loja/           # Comissoes, Descontos, MetasVenda
 │   │   ├── cadastro/       # GestaoIMEI, Cartao, GrupoPermissao, GrupoContas, Fornecedor
 │   │   └── estoque/        # Movimentacao, NfeFornecedor, PosicaoSintetica, EstoqueValorizado
@@ -43,6 +47,15 @@ Construir uma aplicacao admin dashboard moderna usando ViteJs, TypeScript, React
 - Projeto migrado de CRA/CRACO para Vite 8 + TypeScript
 - vite.config.ts com alias @, porta 3000, envPrefix compativel
 - tsconfig.json com allowJs para componentes Shadcn em .jsx
+
+### Autenticacao Visual ✅ (MOCKADA - sem backend)
+- Tela de Login com layout split (formulario + imagem hero)
+- Tela de Cadastro (Nome, Email, Senha, Confirmar Senha)
+- Tela Esqueceu Senha (email para recuperacao)
+- AuthContext com localStorage (qualquer email faz login)
+- Rotas protegidas (redireciona para /login se nao autenticado)
+- Logout funcional via menu do header
+- Brand: "StoreManager Pro - Gestao inteligente de lojas"
 
 ### Fundacao ✅
 - QueryClientProvider configurado em main.tsx

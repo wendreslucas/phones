@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Store, ClipboardList, Package,
   ChevronDown, ChevronRight, Menu, X, Bell,
@@ -21,6 +21,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
+
+import { useAuth } from '@/contexts/AuthContext'
 
 interface NavGroup {
   label: string
@@ -70,6 +72,8 @@ export default function DashboardLayout() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['Loja', 'Cadastro', 'Estoque'])
   const location = useLocation()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
 
   const toggleGroup = (label: string) => {
     setExpandedGroups((prev) =>
@@ -181,12 +185,14 @@ export default function DashboardLayout() {
       <div className="border-t border-white/10 p-3">
         <div className="menu-item text-sm text-white/70">
           <Avatar className="w-7 h-7">
-            <AvatarFallback className="bg-white/20 text-white text-xs font-medium">AD</AvatarFallback>
+            <AvatarFallback className="bg-white/20 text-white text-xs font-medium">
+              {user?.name?.substring(0, 2).toUpperCase() || 'AD'}
+            </AvatarFallback>
           </Avatar>
           {sidebarOpen && (
             <div className="flex-1 min-w-0 animate-fade-in">
-              <p className="text-white text-xs font-medium truncate">Admin</p>
-              <p className="text-white/50 text-[10px] truncate">admin@storeadmin.com</p>
+              <p className="text-white text-xs font-medium truncate">{user?.name || 'Admin'}</p>
+              <p className="text-white/50 text-[10px] truncate">{user?.email || 'admin@storeadmin.com'}</p>
             </div>
           )}
         </div>
@@ -266,7 +272,9 @@ export default function DashboardLayout() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="user-menu-btn">
                   <Avatar className="w-7 h-7">
-                    <AvatarFallback className="bg-primary text-primary-foreground text-xs">AD</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                      {user?.name?.substring(0, 2).toUpperCase() || 'AD'}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -274,7 +282,7 @@ export default function DashboardLayout() {
                 <DropdownMenuItem><User className="w-3.5 h-3.5 mr-2" /> Perfil</DropdownMenuItem>
                 <DropdownMenuItem><Settings className="w-3.5 h-3.5 mr-2" /> Configuracoes</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive"><LogOut className="w-3.5 h-3.5 mr-2" /> Sair</DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive" onClick={() => { logout(); navigate('/login') }}><LogOut className="w-3.5 h-3.5 mr-2" /> Sair</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -1,104 +1,57 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types';
-import { authApi } from '../services/api';
+import { createContext, useContext, useState, useEffect } from 'react'
+import type { ReactNode } from 'react'
+
+interface User {
+  name: string
+  email: string
+}
 
 interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  selectedLojaId: string | null;
-  setSelectedLojaId: (id: string) => void;
+  user: User | null
+  isAuthenticated: boolean
+  login: (email: string) => void
+  register: (name: string, email: string) => void
+  logout: () => void
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null)
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedLojaId, setSelectedLojaId] = useState<string | null>(null);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    // Check for existing session
-    const checkAuth = async () => {
-      const token = localStorage.getItem('auth_token');
-      if (token) {
-        try {
-          const userData = await authApi.getCurrentUser();
-          setUser(userData as User);
-          if (userData.lojas.length > 0) {
-            setSelectedLojaId(userData.lojas[0].id);
-          }
-        } catch (error) {
-          localStorage.removeItem('auth_token');
-        }
-      }
-      setIsLoading(false);
-    };
-    
-    // For demo purposes, auto-login
-    const autoLogin = async () => {
-      try {
-        const userData = await authApi.getCurrentUser();
-        setUser(userData as User);
-        if (userData.lojas.length > 0) {
-          setSelectedLojaId(userData.lojas[0].id);
-        }
-      } catch (error) {
-        console.error('Auto-login failed:', error);
-      }
-      setIsLoading(false);
-    };
-    
-    autoLogin();
-  }, []);
-
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      const response = await authApi.login(email, password);
-      localStorage.setItem('auth_token', response.token);
-      setUser(response.user as User);
-      if (response.user.lojas.length > 0) {
-        setSelectedLojaId(response.user.lojas[0].id);
-      }
-    } finally {
-      setIsLoading(false);
+    const stored = localStorage.getItem('storemanager_user')
+    if (stored) {
+      try { setUser(JSON.parse(stored)) } catch { /* ignore */ }
     }
-  };
+  }, [])
+
+  const login = (email: string) => {
+    const u = { name: email.split('@')[0], email }
+    setUser(u)
+    localStorage.setItem('storemanager_user', JSON.stringify(u))
+  }
+
+  const register = (name: string, email: string) => {
+    const u = { name, email }
+    setUser(u)
+    localStorage.setItem('storemanager_user', JSON.stringify(u))
+  }
 
   const logout = () => {
-    authApi.logout();
-    setUser(null);
-    setSelectedLojaId(null);
-  };
+    setUser(null)
+    localStorage.removeItem('storemanager_user')
+  }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        isLoading,
-        login,
-        logout,
-        selectedLojaId,
-        setSelectedLojaId,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
+  return ctx
+}
